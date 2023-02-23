@@ -84,5 +84,7 @@ open fastqc_report.html
 
 You should see a plot that looks like this:
 
-![abbrev-pipeline](./images/abbrev-pipeline.jpg)
+![abbrev-pipeline](./images/fastqc_plot.png)
+
+This shows you the average quality score for your reads at each position. If you look at the example.fastq file (e.g., ```less example.fastq```), you'll see that each read is 100 bp in length (this is your read length). On this plot, you'll see that 
 
