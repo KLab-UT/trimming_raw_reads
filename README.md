@@ -82,9 +82,18 @@ open fastqc_report.html
 ```
 > note: This will copy to whatever directory you are in.
 
-You should see a plot that looks like this:
+At the top of the page, you should see information about the 'Basic statistics' for your reads in the file example.fastq. You have 25 total sequences in this file, each of which is of length 100 bp. If you look at the example.fastq file (e.g., ```less example.fastq```), you'll see that each read is 100 bp in length (this is your read length).
+
+Under this, you should see a section called 'Per base sequencing quality' with a plot that looks like this:
 
 ![abbrev-pipeline](./images/fastqc_plot.png)
 
-This shows you the average quality score for your reads at each position. If you look at the example.fastq file (e.g., ```less example.fastq```), you'll see that each read is 100 bp in length (this is your read length). On this plot, you'll see that 
+This shows you the average quality score for your reads at each position. On this plot, you'll see that each column represents a position (1-100). Each column also has a value represented by the blue line. This is your average score at that position across your reads. Most of the reads start of strong (Phred score > 30), but this tapers towards the end where the score drops beneath the standard threshold of 30. The base calls with scores less than 30 should be trimmed (removed).
+> note: We chose '30' as our cutoff. However, the cutoff you choose may be different. You need to decide based on the needs of your project what your cutoff is going to be.
+
+
+# Trimming
+
+To trim our reads, we will use the program 'fastp'. The syntax for this program is simple:
+
 
