@@ -94,12 +94,17 @@ This shows you the average quality score for your reads at each position. On thi
 
 # Trimming
 
-To trim our reads, we will use the program 'fastp'. The syntax for this program is simple, and is described on their [documentation](https://github.com/OpenGene/fastp)
+To trim our reads, we will use the program 'fastp'. The syntax for this program is simple, and is described on their [documentation](https://github.com/OpenGene/fastp). Execute the following command.
 
-fastp -q 15 -u 40 
+```fastp -q 15 -u 40 -i example_raw.fastq -o example_cleaned.fastq```
+
+Information on what the options for this program do is provided in the table below.
+
 
 | Flag  |  Full option                  | Description                         | Default |
-|:--------:|:--------------------------:|:-----------------------------------:|:-------:|
-|  -q      |  --qualified_quality_phred | The threshold for qualifying a base | 15      |
+|:-----:|:--------------------------:|:-----------------------------------:|:-------:|
+|  ```-q```   |  ```--qualified_quality_phred``` | The threshold for qualifying ```a``` base | 15      |
+|  ```-u```   |  ```--unqualified_percent_limit``` | Reads with ```u```% bases under ```q``` value are discarded | 40   |
+|  ```-e```   |  ```--average_qual```              | Reads with average quality of ```e``` are discarded   | 0    |
 
 
