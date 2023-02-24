@@ -94,11 +94,14 @@ This shows you the average quality score for your reads at each position. On thi
 
 # Trimming
 
-To trim our reads, we will use the program 'fastp'. The syntax for this program is simple, and is described on their [documentation](https://github.com/OpenGene/fastp). Execute the following command.
+To trim our reads, we will use the program 'fastp'. The syntax for this program is simple, and is described on their [documentation](https://github.com/OpenGene/fastp). Execute the following commands.
 
-```fastp -q 15 -u 40 -i example_raw.fastq -o example_cleaned.fastq```
+```
+module load fastp/0.20.1
+fastp -q 15 -u 40 -e 30 -i example_raw.fastq -o example_cleaned.fastq
+```
 
-Information on what the options for this program do is provided in the table below.
+Information on what the options for this program do is provided in the table below. You can see all fastp options by running ```fastp -h```
 
 
 | Flag  |  Full option                  | Description                         | Default |
@@ -106,5 +109,18 @@ Information on what the options for this program do is provided in the table bel
 |  ```-q```   |  ```--qualified_quality_phred``` | The threshold for qualifying ```a``` base | 15      |
 |  ```-u```   |  ```--unqualified_percent_limit``` | Reads with ```u```% bases under ```q``` value are discarded | 40   |
 |  ```-e```   |  ```--average_qual```              | Reads with average quality of ```e``` are discarded   | 0    |
+|  ```-l```   |  ```--length_required```           | Reads with length (after filtering) > ```l``` are discarded | 15   |
+|  ```-a```   |  ```--adapter_sequence```          | The nucleotide sequence for the adapter** used for sequencing | *   |
+|             |  ```--adapter_sequence_r2```       | The adapter sequence** for read 2 in paired-end sequencing    | *   |
+|  ```-M```   |  ```--cut_mean_quality```          | The minimum average in a sliding window to not remove bases   | 20  |
+|  ```-W```   |  ```--cut_window_size```           | The number of bases in a sliding window                       | 4   |
+|  ```-5```   |  ```--cut_front```                 | Use sliding window to trim leading sequences with averages < ```M``` | OFF  |
+|  ```-3```   |  ```--cut_tail```                  | Use sliding window to trim trailing sequences with averages < ```M``` | OFF  |
+|  ```-c```   |  ```--correction```                | Overlap analysis to correct bases with low reads (only for PE reads)  | OFF  |
+|  ```-m```   | 
+#### \* If no adapter sequence is specified, the adapter sequence is intuited by fastp (which is faster, but can be inaccurate)
+#### \** The TruSeq adapter sequences are ```AGATCGGAAGAGCACACGTCTGAACTCCAGTCA``` (for read 1) and ```AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT``` (for read2). 
 
+You can also split the output files into multiple fastq files, which can be helpful if you plan to do mapping in parallel. This options to create 3 output files for a single individual is shown below (we don't include it in this example, but it would decrease downstream processing time).
+```fastp --split_prefix_digits=4 --out1=out.fq --split=3```
 
