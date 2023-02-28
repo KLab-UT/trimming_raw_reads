@@ -75,11 +75,12 @@ fastqc example.fastq
 Then from your local environment (not from the CHPC terminal window):
 
 ```
-scp <uNID>@lonepeak.chpc.utah.edu:<path-to-repository>/example_fastqc.zip .```
+scp <uNID>@lonepeak.chpc.utah.edu:<path-to-repository>/example_fastqc.zip .
 unzip example_fastqc.zip
 cd example_fastqc
 open fastqc_report.html
 ```
+> note: scp is a way to securely copy a file. The first parameter is the path to the remote file. The second parameter is the path to the destination location (in this scenario we just used the current directory ```.```)
 > note: This will copy to whatever directory you are in.
 
 At the top of the page, you should see information about the 'Basic statistics' for your reads in the file example.fastq. You have 25 total sequences in this file, each of which is of length 100 bp. If you look at the example.fastq file (e.g., ```less example.fastq```), you'll see that each read is 100 bp in length (this is your read length).
@@ -98,28 +99,49 @@ To trim our reads, we will use the program 'fastp'. The syntax for this program 
 
 ```
 module load fastp/0.20.1
-fastp -q 15 -u 40 -e 30 -i example_raw.fastq -o example_cleaned.fastq
+fastp \
+  --in1 example_raw.fastq  --in2 NEED
+  -q 15 \
+  -u 40 \
+  -e 30 \
+  -l 15 \
+  -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \
+  --adapter_sequence_r2 AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
+  -M 25 \
+  -W 5  \
+  -5 \
+  -3 \
+  -c \
+  -m --merged_out merged --out1 unmerged1 --out2 unmerged2 --unpaired1 unpaired1 --unpaired2 unpaired2
+  -D
+  -o example_cleaned.fastq
 ```
 
 Information on what the options for this program do is provided in the table below. You can see all fastp options by running ```fastp -h```
 
 
-| Flag  |  Full option                  | Description                         | Default |
-|:-----:|:--------------------------:|:-----------------------------------:|:-------:|
-|  ```-q```   |  ```--qualified_quality_phred``` | The threshold for qualifying ```a``` base | 15      |
-|  ```-u```   |  ```--unqualified_percent_limit``` | Reads with ```u```% bases under ```q``` value are discarded | 40   |
-|  ```-e```   |  ```--average_qual```              | Reads with average quality of ```e``` are discarded   | 0    |
-|  ```-l```   |  ```--length_required```           | Reads with length (after filtering) > ```l``` are discarded | 15   |
-|  ```-a```   |  ```--adapter_sequence```          | The nucleotide sequence for the adapter** used for sequencing | *   |
-|             |  ```--adapter_sequence_r2```       | The adapter sequence** for read 2 in paired-end sequencing    | *   |
-|  ```-M```   |  ```--cut_mean_quality```          | The minimum average in a sliding window to not remove bases   | 20  |
-|  ```-W```   |  ```--cut_window_size```           | The number of bases in a sliding window                       | 4   |
-|  ```-5```   |  ```--cut_front```                 | Use sliding window to trim leading sequences with averages < ```M``` | OFF  |
-|  ```-3```   |  ```--cut_tail```                  | Use sliding window to trim trailing sequences with averages < ```M``` | OFF  |
-|  ```-c```   |  ```--correction```                | Overlap analysis to correct bases with low reads (only for PE reads)  | OFF  |
-|  ```-m```   | 
-#### \* If no adapter sequence is specified, the adapter sequence is intuited by fastp (which is faster, but can be inaccurate)
-#### \** The TruSeq adapter sequences are ```AGATCGGAAGAGCACACGTCTGAACTCCAGTCA``` (for read 1) and ```AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT``` (for read2). 
+| Flag                   |  Full option                            | Description                                                              | Default |
+|:----------------------:|:---------------------------------------:|:------------------------------------------------------------------------:|:-------:|
+|  ```-i``` and ```-I``` |  ```--in1``` and ```--in2```            | Infile(s) (plural if paired-end reads)                                   | NA      |
+|  ```-q```              |  ```--qualified_quality_phred```        | The threshold for qualifying ```a``` base                                | 15      |
+|  ```-u```              |  ```--unqualified_percent_limit```      | Reads with ```u```% bases under ```q``` value are discarded              | 40      |
+|  ```-e```              |  ```--average_qual```                   | Reads with average quality of ```e``` are discarded                      | 0       |
+|  ```-l```              |  ```--length_required```                | Reads with length (after filtering) > ```l``` are discarded              | 15      |
+|  ```-a```              |  ```--adapter_sequence```               | The nucleotide sequence for the adapter** used for sequencing            | *       |
+|                        |  ```--adapter_sequence_r2```            | The adapter sequence** for read 2 in paired-end sequencing               | *       |
+|  ```-M```              |  ```--cut_mean_quality```               | The minimum average in a sliding window to not remove bases              | 20      |
+|  ```-W```              |  ```--cut_window_size```                | The number of bases in a sliding window                                  | 4       |
+|  ```-5```              |  ```--cut_front```                      | Use sliding window to trim leading sequences with averages < ```M```     | OFF     |
+|  ```-3```              |  ```--cut_tail```                       | Use sliding window to trim trailing sequences with averages < ```M```    | OFF     |
+|  ```-c```              |  ```--correction```                     | Overlap analysis to correct bases with low reads (only for PE reads)     | OFF     |
+|  ```-m```              |  ```--merged```	                   | Merge paired-end reads that overlap into a single read                   | OFF     |
+|                        |  ```--merged_out```                     | Filename for storing merged reads                                        | NA      |
+|  ```-o``` and ```-O``` |  ```--out1``` and ```out2```            | Filenames for unmerged reads that passed trimming filters                | NA      |
+|                        |  ```--unpaired1``` and ```unpaired2```  | Filenames for reads that can't be merged because one didn't pass filters | NA      |
+|  ```-D```              |  ```--dedup```                          | Duplicate reads\*\*\* (reads with the exact same sequence) are removed   | ON      |
+##### \* If no adapter sequence is specified, the adapter sequence is intuited by fastp (which is faster, but can be inaccurate)
+##### \*\* The TruSeq adapter sequences are ```AGATCGGAAGAGCACACGTCTGAACTCCAGTCA``` (for read 1) and ```AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT``` (for read2). 
+##### \*\*\* This is to remove PCR duplicates
 
 You can also split the output files into multiple fastq files, which can be helpful if you plan to do mapping in parallel. This options to create 3 output files for a single individual is shown below (we don't include it in this example, but it would decrease downstream processing time).
 ```fastp --split_prefix_digits=4 --out1=out.fq --split=3```
