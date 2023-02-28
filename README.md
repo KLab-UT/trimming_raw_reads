@@ -75,7 +75,7 @@ fastqc example.fastq
 Then from your local environment (not from the CHPC terminal window):
 
 ```
-scp <uNID>@lonepeak.chpc.utah.edu:<path-to-repository>/example_fastqc.zip .```
+scp <uNID>@lonepeak.chpc.utah.edu:<path-to-repository>/example_fastqc.zip .
 unzip example_fastqc.zip
 cd example_fastqc
 open fastqc_report.html
