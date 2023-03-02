@@ -69,21 +69,21 @@ Before trimming your data, it may be helpful to examine the quality of your read
 While on the CHPC in this repository:
 ```
 module load fastqc/0.11.4
-fastqc example.fastq
+fastqc example_raw.fastq
 ```
 
 Then from your local environment (not from the CHPC terminal window):
 
 ```
-scp <uNID>@lonepeak.chpc.utah.edu:<path-to-repository>/example_fastqc.zip .
-unzip example_fastqc.zip
-cd example_fastqc
-open fastqc_report.html
+scp <uNID>@lonepeak.chpc.utah.edu:<path-to-repository>/example_raw_fastqc.zip .
+unzip example_raw_fastqc.zip
+cd example_raw_fastqc
+open fastqc_raw_report.html
 ```
 > note: scp is a way to securely copy a file. The first parameter is the path to the remote file. The second parameter is the path to the destination location (in this scenario we just used the current directory ```.```)
 > note: The ```.``` at the end of your scp command means the file you are copying will land in the directory you are in.
 
-At the top of the page, you should see information about the 'Basic statistics' for your reads in the file example.fastq. You have 25 total sequences in this file, each of which is of length 100 bp. If you look at the example.fastq file (e.g., ```less example.fastq```), you'll see that each read is 100 bp in length (this is your read length).
+At the top of the page, you should see information about the 'Basic statistics' for your reads in the file example_raw.fastq. You have 25 total sequences in this file, each of which is of length 100 bp. If you look at the example_raw.fastq file (e.g., ```less example_raw.fastq```), you'll see that each read is 100 bp in length (this is your read length).
 
 Under this, you should see a section called 'Per base sequencing quality' with a plot that looks like this:
 
@@ -143,4 +143,50 @@ You'll notice that many of the options in this table aren't implemented in your 
 
 You can also split the output files into multiple fastq files, which can be helpful if you plan to do mapping in parallel. This options to create 3 output files for a single individual is shown below (we don't include it in this example, but it would decrease downstream processing time).
 ```fastp --split_prefix_digits=4 --out1=out.fq --split=3```
+
+When you run fastp, information about the results is printed to stdout (printed to your terminal window in our example above). We see that our file started with 25 reads, and after filtering we end up with 21 reads. Although we reduced the number of reads, you'll see that the quality of our reads increased. FOr instance, the percentage of bases with a PHRED score of at least 20 (meaning an accuracy of 99%) increased from 91.68% to 98.65%. Likewise, the percentage of bases with a quality score of at least 30 (meaning an accuracy of 99.9%) increased from 85.36% to 92.91%.
+
+We can also see that we have a new file called "example_cleaned.fastq". This file is smaller (5413) than the "example_raw.fastq" file (6510), due to the reduction in data from quality filtering.
+
+You can now run fastqc on your cleaned data:
+
+```
+fastqc example_raw.fastq
+```
+
+What do you notice that is different about your data?
+
+# <a name="exercise"></a>
+# Exercise
+The basic workflow for cleaning reads in this exercise reflects that from [Farkas et al., 2021](https://doi.org/10.3389/fmicb.2021.665041).
+
+## Exercise Objective
+Download and clean raw reads from human tumor liver tissue. Compare the reads from before cleaning to those after cleaning. 
+
+To complete this exercise, complete the following steps and answer the questions contained within the worksheet.md file. 
+
+## Run the bash script to download and clean raw reads
+Make sure you are in the repository directory (where this README is stored), and run the following command **on the CHPC (NOT your local machine)**:
+
+```
+sbatch bash_scripts/q.main.sh
+```
+
+You should understand what is going on in both the q.main.sh and trim_raw_reads.sh files
+
+## Remix 1: Modify a trimming parameter
+Once your run has ran to completion, modify a parameter for fastp. You can change any parameter, but just choose one thing.
+> note: Make sure you create a different outfile name from the original fastp run, otherwise your original outfile will get overwritten.
+
+## Remix 2: Modify a DIFFERENT trimming parameter
+Once your run has ran to completion, modify a parameter for fastp. You can change any parameter, but just choose one thing.
+> note: Make sure you create a different outfile name from Remix 1, otherwise your original outfile will get overwritten.
+
+Now compare the output of your cleaning runs. Add your insight to the worksheet. Once you have completed the worksheet, add, commit, and push the worksheet and the logfile to your forked repository.
+
+```
+add worksheet.md logfile
+git commit -m "ran script and answered worksheet questions"
+git push
+```
 

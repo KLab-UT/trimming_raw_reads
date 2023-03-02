@@ -31,6 +31,11 @@ echo "Downloading SRA files from the given list of accessions"
 prefetch --max-size 800G -O ./ --option-file ${l}
 echo "SRA files were downloaded in current directory"
 echo ""
+ls -p | grep SRR > sra_dirs
+while read i; do mv "$i"*.sra .; done<sra_dirs
+SRA= ls -1 *.sra
+for SRA in *.sra; do fastq-dump --gzip ${SRA}
+done
 echo "Done"
 
 ##################################################################################
@@ -38,6 +43,10 @@ echo "Done"
 ##################################################################################
 
 echo "Trimming downloaded Illumina datasets with fastp."
+z= ls -1 *.fastq.gz
+for z in *.fastq.gz; do fastp -w ${t} -i ${z} -o ${z}.fastp
+gzip ${z}.fastp
+done
 echo ""
 
 
