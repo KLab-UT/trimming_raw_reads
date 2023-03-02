@@ -81,7 +81,7 @@ cd example_fastqc
 open fastqc_report.html
 ```
 > note: scp is a way to securely copy a file. The first parameter is the path to the remote file. The second parameter is the path to the destination location (in this scenario we just used the current directory ```.```)
-> note: This will copy to whatever directory you are in.
+> note: The ```.``` at the end of your scp command means the file you are copying will land in the directory you are in.
 
 At the top of the page, you should see information about the 'Basic statistics' for your reads in the file example.fastq. You have 25 total sequences in this file, each of which is of length 100 bp. If you look at the example.fastq file (e.g., ```less example.fastq```), you'll see that each read is 100 bp in length (this is your read length).
 
@@ -95,25 +95,21 @@ This shows you the average quality score for your reads at each position. On thi
 
 # Trimming
 
-To trim our reads, we will use the program 'fastp'. The syntax for this program is simple, and is described on their [documentation](https://github.com/OpenGene/fastp). Execute the following commands.
+To trim our reads, we will use the program 'fastp'. The syntax for this program is described in their [documentation](https://github.com/OpenGene/fastp). Execute the following command to trim reads within the file ```example_raw.fastq```:
 
 ```
 module load fastp/0.20.1
 fastp \
-  --in1 example_raw.fastq  --in2 NEED
+  -i example_raw.fastq \
   -q 15 \
   -u 40 \
   -e 30 \
   -l 15 \
   -a AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \
-  --adapter_sequence_r2 AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
   -M 25 \
   -W 5  \
   -5 \
   -3 \
-  -c \
-  -m --merged_out merged --out1 unmerged1 --out2 unmerged2 --unpaired1 unpaired1 --unpaired2 unpaired2
-  -D
   -o example_cleaned.fastq
 ```
 
@@ -138,10 +134,12 @@ Information on what the options for this program do is provided in the table bel
 |                        |  ```--merged_out```                     | Filename for storing merged reads                                        | NA      |
 |  ```-o``` and ```-O``` |  ```--out1``` and ```out2```            | Filenames for unmerged reads that passed trimming filters                | NA      |
 |                        |  ```--unpaired1``` and ```unpaired2```  | Filenames for reads that can't be merged because one didn't pass filters | NA      |
-|  ```-D```              |  ```--dedup```                          | Duplicate reads\*\*\* (reads with the exact same sequence) are removed   | ON      |
+|                |  ```--dedup```                          | Duplicate reads\*\*\* (reads with the exact same sequence) are removed   | ON      |
 ##### \* If no adapter sequence is specified, the adapter sequence is intuited by fastp (which is faster, but can be inaccurate)
 ##### \*\* The TruSeq adapter sequences are ```AGATCGGAAGAGCACACGTCTGAACTCCAGTCA``` (for read 1) and ```AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT``` (for read2). 
-##### \*\*\* This is to remove PCR duplicates
+##### \*\*\* This is to remove PCR duplicates, however this feature is only available in fastp versions after 0.22
+
+You'll notice that many of the options in this table aren't implemented in your command above. One reason for this is because the example_raw.fastq contains reads from single-end (SE) sequencing. Options such as ```--in2```, ```adapter_sequence_r2```, ```--correction```, ```--merged``` (and the other 
 
 You can also split the output files into multiple fastq files, which can be helpful if you plan to do mapping in parallel. This options to create 3 output files for a single individual is shown below (we don't include it in this example, but it would decrease downstream processing time).
 ```fastp --split_prefix_digits=4 --out1=out.fq --split=3```
