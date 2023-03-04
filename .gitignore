@@ -1,1 +1,6 @@
 SRR5138446
+raw_reads
+sra_files
+cleaned_reads
+*.err-*
+*.out-*
