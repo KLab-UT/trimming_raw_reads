@@ -176,16 +176,20 @@ You should understand what is going on in both the q.main.sh and trim_raw_reads.
 
 ## Remix 1: Modify a trimming parameter
 Once your run has ran to completion, modify a parameter for fastp. You can change any parameter, but just choose one thing.
-> note: Make sure you create a different outfile name from the original fastp run, otherwise your original outfile will get overwritten.
+
+You will make these changes to the "trim_raw_reads.sh" file and re-run the "q.main.sh" batch script. To make sure you don't overwrite your files from the previous run, I recommend changing the directory names to include ```remix1``` (**you only need to do this for the cleaned_reads directories. You should not re-download, re-fastq-dump, or re-qc the raw_reads. In other words, you should rename the directories in lines 35 and 36 and comment out lines 38 - 70. Alternatively, you could just make a new script and call it from q.main.sh**)
 
 ## Remix 2: Modify a DIFFERENT trimming parameter
 Once your run has ran to completion, modify a parameter for fastp. You can change any parameter, but just choose one thing.
-> note: Make sure you create a different outfile name from Remix 1, otherwise your original outfile will get overwritten.
+
+Once again, you will make these changes to the "trim_raw_reads.sh" file and re-run the "q.main.sh" batch script. To make sure you don't overwrite your files from the previous run, I recommend changing the directory names to include ```remix1``` (**you only need to do this for the cleaned_reads directories. You should not re-download, re-fastq-dump, or re-qc the raw_reads. In other words, you should rename the directories in lines 35 and 36 and comment out lines 38 - 70. Alternatively, you could just make a new script and call it from q.main.sh**)
 
 Now compare the output of your cleaning runs. Add your insight to the worksheet. Once you have completed the worksheet, add, commit, and push the worksheet and the logfile to your forked repository.
 
 ```
 add worksheet.md logfile
+# Make sure you don't add all of the genomic files, just the worksheet.md
+# The .gitignore includes the genomic files, so they won't be added by default
 git commit -m "ran script and answered worksheet questions"
 git push
 ```
