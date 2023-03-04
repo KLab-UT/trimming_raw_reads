@@ -1,8 +1,0 @@
-load required modules
-Downloading SRA files from the given list of accessions
-
-SRA files were downloaded in current directory
-
-Done
-Trimming downloaded Illumina datasets with fastp.
-
