@@ -166,7 +166,20 @@ Download and clean raw reads from human tumor liver tissue. Compare the reads fr
 To complete this exercise, complete the following steps and answer the questions contained within the worksheet.md file. 
 
 ## Run the bash script to download and clean raw reads
-Make sure you are in the repository directory (where this README is stored), and run the following command **on the CHPC (NOT your local machine)**:
+From the repository directory (where this README is stored), move into the ```bash_scripts``` directory.
+
+```cd bash_scripts```
+
+Here you'll see two bash files: "q.main.sh" and "tri_raw_reads.sh". The "q.main.sh" file is a batch script that provides run information to slurm, and the "trim_raw_reads.sh" file processes RNA seq data (qc and cleaning). **You need to look at the "q.main.sh" file and make sure the paths are correct for your repository**. For example, the path in the original file will look like this:
+
+```
+wd=~/BIOL_4310/Exercises/Exercise_4/trimming_raw_reads
+```
+
+If you set up the path to your repository on your login node differently than this, then you will need to edit that line of code.
+
+Once you have the paths correct, from the repository directory move into the ```bash_scripts``` directory and run the following command (**on the CHPC (NOT your local machine)**):
+
 
 ```
 sbatch bash_scripts/q.main.sh
