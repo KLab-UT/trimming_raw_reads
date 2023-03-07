@@ -45,7 +45,7 @@ echo ""
 
 echo "Getting fastq files from SRA files"
 cd sra_files
-while read i; do \
+while read i; do 
 	cd "$i" \
 	fastq-dump --split-files --gzip "$i".sra \ 
 	# the --split-files option is needed for PE data
@@ -63,7 +63,7 @@ echo "Done"
 echo "Perform quality check of raw read files"
 cd raw_reads
 pwd
-while read i; do \
+while read i; do 
 	fastqc "$i"_1.fastq.gz # insert description here
 	fastqc "$i"_2.fastq.gz # insert description here
 done<../sra_files/sra_list
@@ -77,7 +77,7 @@ echo "Trimming downloaded Illumina datasets with fastp."
 cd raw_reads
 pwd
 ls *.fastq.gz | cut -d "." -f "1" | cut -d "_" -f "1" | sort | uniq > fastq_list
-while read z ; do \
+while read z ; do 
 	fastqc ${z}_1.fastq.gz
 	fastqc ${z}_2.fastq.gz
 	fastp -i ${z}_1.fastq.gz -I ${z}_2.fastq.gz \ # insert description here
@@ -110,7 +110,7 @@ echo ""
 echo "Perform check of cleaned read files"
 cd cleaned_reads/merged_reads
 pwd
-while read i; do \
+while read i; do 
 	fastqc "$i"_merged.fastq.gz # insert description here
 done<../sra_files/sra_list
 multiqc . # insert description here
