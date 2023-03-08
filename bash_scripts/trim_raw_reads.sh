@@ -25,7 +25,6 @@ wd=~/BIOL_4310/Exercises/Exercise_4/trimming_raw_reads
 echo "load required modules"
 module load fastqc/0.11.4
 module load multiqc/1.12
-module load sra-toolkit/3.0.2
 module load fastp/0.20.1
 
 echo "create file storing environment"
@@ -34,41 +33,43 @@ mkdir -p raw_reads
 mkdir -p cleaned_reads/merged_reads
 mkdir -p cleaned_reads/unmerged_reads
 
-# echo "Downloading SRA files from the given list of accessions"
-# cd sra_files
-# prefetch --max-size 800G -O ./ --option-file ../${l}
-# ls | grep SRR > sra_list
-# cd ..
-# echo "SRA files were downloaded in current directory"
-# echo ""
-# 
-# echo "Getting fastq files from SRA files"
-# cd sra_files
-# while read i; do 
-# 	cd "$i" 
-# 	fastq-dump --split-files --gzip "$i".sra 
-# 	# the --split-files option is needed for PE data
-# 	mv "$i"*.fastq.gz ../../raw_reads/ 
-# 	cd ..
-# done<sra_list
-# cd ..
-# echo "Done"
+echo "Downloading SRA files from the given list of accessions"
+module load sra-toolkit/3.0.2
+cd sra_files
+prefetch --max-size 800G -O ./ --option-file ../${l}
+ls | grep SRR > sra_list
+cd ..
+echo "SRA files were downloaded in current directory"
+echo ""
+
+echo "Getting fastq files from SRA files"
+cd sra_files
+while read i; do 
+	cd "$i" 
+	fastq-dump --split-files --gzip "$i".sra 
+	# the --split-files option is needed for PE data
+	mv "$i"*.fastq.gz ../../raw_reads/ 
+	cd ..
+done<sra_list
+cd ..
+module unload sra-toolkit/3.0.2
+echo "Done"
 
 
 ###################################
 # Quality check of raw read files #
 ###################################
 
-# echo "Perform quality check of raw read files"
-# cd raw_reads
-# ls
-# pwd
-# while read i; do 
-# 	fastqc -h
-# 	fastqc "$i"_1.fastq.gz # insert description here
-# 	fastqc "$i"_2.fastq.gz # insert description here
-# done<../sra_files/sra_list
-# multiqc . # insert description here
+echo "Perform quality check of raw read files"
+cd raw_reads
+ls
+pwd
+while read i; do 
+  	fastqc "$i"_1.fastq.gz # insert description here
+  	fastqc "$i"_2.fastq.gz # insert description here
+done<../sra_files/sra_list
+multiqc . # insert description here
+cd ..
 
 ####################################################
 # Trimming downloaded Illumina datasets with fastp #
@@ -79,22 +80,28 @@ cd raw_reads
 pwd
 ls *.fastq.gz | cut -d "." -f "1" | cut -d "_" -f "1" | sort | uniq > fastq_list
 while read z ; do 
-	fastp -i ${z}_1.fastq.gz -I ${z}_2.fastq.gz \ # insert description here
-	# -e 25 \ # insert description here
-	# -q 15 \ # insert description here
-	# -u 40 \ # insert description here
-	# -l 15 \ # insert description here
-	# --adapter_sequence AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \ # insert description here
-	# --adapter_sequence_r2 AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \ # insert description here
-	# -M 20 -W 4 -5 -3 \ # insert description here
-	# -c \ # insert description here
-	-m \ # insert description here
-	--merged_out $wd/cleaned_reads/merged_reads/${z}_merged.fastq \ # insert description here
-	--out1 $wd/cleaned_reads/unmerged_reads/${z}_unpaired1_passed.fastq \ # insert description here
-	--out2 $wd/cleaned_reads/unmerged_reads/${z}_unpaired2_passed.fastq  # insert description here
-        # cd ../cleaned_reads/merged_reads
-	# gzip ${z}_merged.fastq
-	# cd ../../raw_reads
+# Perform trimming
+# -----------------------------------------------
+# Insert description of -i and -I parameters here
+# Insert description of -m, --merged_out, --out1, and --out2 parameters here
+# Insert description of -e and -q here
+# Insert description of -u and -l here
+# Insert description of --adapter_sequence and --adapter_sequence_r2 here
+# Insert description of -M, -W, -5, and -3 here
+# Insert description of -c here
+# -----------------------------------------------
+fastp -i "$z"_1.fastq.gz -I "$z"_2.fastq.gz \
+      -m --merged_out $wd/cleaned_reads/merged_reads/"$z"_merged.fastq \
+      --out1 $wd/cleaned_reads/unmerged_reads/"$z"_unmerged1.fastq --out2 $wd/cleaned_reads/unmerged_reads/"$z"_unmerged2.fastq \
+      -e 25 -q 15 \
+      -u 40 -l 15 \
+      --adapter_sequence AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \
+      --adapter_sequence_r2 AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT \
+      -M 20 -W 4 -5 -3 \
+      -c 
+cd ../cleaned_reads/merged_reads
+gzip "$z"_merged.fastq
+cd ../../raw_reads
 done<fastq_list
 cd ..
 echo ""
@@ -106,11 +113,10 @@ echo ""
 #######################################
 
 echo "Perform check of cleaned read files"
-cd cleaned_reads/merged_reads
+cd $wd/cleaned_reads/merged_reads
 pwd
 while read i; do 
 	fastqc "$i"_merged.fastq.gz # insert description here
-done<../sra_files/sra_list
-multiqc . # insert description here
+done<$wd/sra_files/sra_list
 
-}
+ }

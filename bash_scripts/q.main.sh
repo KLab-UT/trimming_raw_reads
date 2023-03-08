@@ -1,5 +1,5 @@
 #!/bin/sh
-#SBATCH --account=utu
+#SBATCH --account=utu-biol4310
 #SBATCH --partition=lonepeak
 #SBATCH --nodes=1
 #SBATCH --mem=16
