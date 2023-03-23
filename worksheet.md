@@ -26,16 +26,6 @@ Answer:
 ### Q8: What proportion of bases were above PHRED score of 30 before filtering?
 Answer: 
 
-### Q9: How many reads were there in the R1 file after filtering?
-Answer:
-### Q10: How many bases were there in the R1 file after filtering?
-Answer:
-### Q11: What proportion of bases were above PHRED score of 20 after filtering?
-Answer: 
-### Q12: What proportion of bases were above PHRED score of 30 after filtering?
-Answer: 
-
-
 ### Q13: How many reads were there in the R2 file before filtering?
 Answer:
 ### Q14: How many bases were there in the R2 file before filtering?
@@ -45,13 +35,13 @@ Answer:
 ### Q16: What proportion of bases were above PHRED score of 30 before filtering?
 Answer: 
 
-### Q17: How many reads were there in the R2 file after filtering?
+### Q17: How many reads were there in the merged file after filtering?
 Answer:
-### Q18: How many bases were there in the R2 file after filtering?
+### Q18: How many bases were there in the merged file after filtering?
 Answer:
-### Q19: What proportion of bases were above PHRED score of 20 after filtering?
+### Q19: What proportion of bases in the merged file were above PHRED score of 20 after filtering?
 Answer: 
-### Q20: What proportion of bases were above PHRED score of 30 after filtering?
+### Q20: What proportion of bases in the merged file were above PHRED score of 30 after filtering?
 Answer: 
 
 ---
