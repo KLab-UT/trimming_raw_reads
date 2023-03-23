@@ -52,20 +52,20 @@ Answer:
 ---
 
 ## The following questions pertain to Remix 1 (the first time you change fastp parameters)
-### Q21: What parameters did you change?
+### Q23: What parameters did you change?
 Answer: 
-### Q22: How did you expect this to change the filtering results (be specific)?
+### Q24: How did you expect this to change the filtering results (be specific)?
 Answer: 
-### Q23: Explain the results. Did the change cause an effect that matched your expectations? Use information from the fastp output to explain.
+### Q25: Explain the results. Did the change cause an effect that matched your expectations? Use information from the fastp output to explain.
 Answer: 
 
 ---
 
 ## The following questions pertain to Remix 2 (the first time you change fastp parameters)
-### Q24: What parameters did you change?
+### Q26: What parameters did you change?
 Answer: 
-### Q25: How did you expect this to change the filtering results (be specific)?
+### Q27: How did you expect this to change the filtering results (be specific)?
 Answer: 
-### Q26: Explain the results. Did the change cause an effect that matched your expectations? Use information from the fastp output to explain.
+### Q28: Explain the results. Did the change cause an effect that matched your expectations? Use information from the fastp output to explain.
 Answer: 
 
