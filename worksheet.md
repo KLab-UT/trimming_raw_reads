@@ -44,6 +44,11 @@ Answer:
 ### Q20: What proportion of bases in the merged file were above PHRED score of 30 after filtering?
 Answer: 
 
+### Q21: What is the difference between the merged and unmerged files (in principle, not quantitatively)?
+Answer:
+### Q22: Why are the unmerged files for R1 and R2 different lengths?
+Answer:
+
 ---
 
 ## The following questions pertain to Remix 1 (the first time you change fastp parameters)
