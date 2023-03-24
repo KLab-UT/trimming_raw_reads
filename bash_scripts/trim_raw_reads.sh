@@ -3,8 +3,8 @@ usage="$(basename "$0") [-h] [-l <SRA_list>] [-d <working_directory>]
 Script to perform raw read preprocessing using fastp
     -h show this help text
     -l path/file to tab-delimitted sra list
-    -wd working directory"
-options=':h:l:d'
+    -d working directory"
+options=':h:l:d:'
 while getopts $options option; do
     case "$option" in
         h) echo "$usage"; exit;;
@@ -15,9 +15,12 @@ while getopts $options option; do
      esac
 done
 
+echo $l
+echo $d
+
 # mandatory arguments
 if [ ! "$l" ] || [ ! "$d"]; then
-    echo "argument -l must be provided"
+    echo "arguments -l and -d must be provided"
     echo "$usage" >&2; exit 1
 fi
 
