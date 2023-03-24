@@ -178,11 +178,17 @@ wd=~/BIOL_4310/Exercises/Exercise_4/trimming_raw_reads
 
 If you set up the path to your repository on your login node differently than this, then you will need to edit that line of code.
 
-Once you have the paths correct, from the ```bash_scripts``` directory run the following command (**on the CHPC (NOT your local machine)**):
+Once you have the paths correct, from the ```bash_scripts``` directory move back into the parent directory.
+
+```
+cd ..
+```
+
+Now run the following command (**on the CHPC (NOT your local machine)**):
 
 
 ```
-sbatch q.main.sh
+sbatch bash_scripts/q.main.sh
 ```
 
 You should understand what is going on in both the q.main.sh and trim_raw_reads.sh files. While you may be unfamiliar with some components, identify items that are familiar and seek to understand what those commands are doing.
