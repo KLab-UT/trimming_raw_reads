@@ -1,22 +1,22 @@
 {
-usage="$(basename "$0") [-h] [-l <SRA_list>] [-wd <working_directory>]
+usage="$(basename "$0") [-h] [-l <SRA_list>] [-d <working_directory>]
 Script to perform raw read preprocessing using fastp
     -h show this help text
     -l path/file to tab-delimitted sra list
     -wd working directory"
-options=':hl:'
+options=':h:l:d'
 while getopts $options option; do
     case "$option" in
         h) echo "$usage"; exit;;
 	l) l=$OPTARG;;
-	wd) wd=$OPTARG;;
+	d) d=$OPTARG;;
 	:) printf "missing argument for -%s\n" "$OPTARG" >&2; echo "$usage" >&2; exit 1;;
        \?) printf "illegal option: -%s\n" "$OPTARG" >&2; echo "$usage" >&2; exit 1;;
      esac
 done
 
 # mandatory arguments
-if [ ! "$l" ] || [ ! "$wd"]; then
+if [ ! "$l" ] || [ ! "$d"]; then
     echo "argument -l must be provided"
     echo "$usage" >&2; exit 1
 fi
@@ -92,8 +92,8 @@ while read z ; do
 # Insert description of -c here
 # -----------------------------------------------
 fastp -i "$z"_1.fastq.gz -I "$z"_2.fastq.gz \
-      -m --merged_out $wd/cleaned_reads/merged_reads/"$z"_merged.fastq \
-      --out1 $wd/cleaned_reads/unmerged_reads/"$z"_unmerged1.fastq --out2 $wd/cleaned_reads/unmerged_reads/"$z"_unmerged2.fastq \
+      -m --merged_out ${d}/cleaned_reads/merged_reads/"$z"_merged.fastq \
+      --out1 ${d}/cleaned_reads/unmerged_reads/"$z"_unmerged1.fastq --out2 ${d}/cleaned_reads/unmerged_reads/"$z"_unmerged2.fastq \
       -e 25 -q 15 \
       -u 40 -l 15 \
       --adapter_sequence AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \
@@ -114,10 +114,10 @@ echo ""
 #######################################
 
 echo "Perform check of cleaned read files"
-cd $wd/cleaned_reads/merged_reads
+cd ${d}/cleaned_reads/merged_reads
 pwd
 while read i; do 
 	fastqc "$i"_merged.fastq.gz # insert description here
-done<$wd/sra_files/sra_list
+done<${d}/sra_files/sra_list
 
  }
