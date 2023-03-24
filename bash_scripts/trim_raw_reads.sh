@@ -1,26 +1,27 @@
 {
-usage="$(basename "$0") [-h] [-l <SRA_list>]
+usage="$(basename "$0") [-h] [-l <SRA_list>] [-wd <working_directory>]
 Script to perform raw read preprocessing using fastp
     -h show this help text
-    -l path/file to tab-delimitted sra list"
+    -l path/file to tab-delimitted sra list
+    -wd working directory"
 options=':hl:'
 while getopts $options option; do
     case "$option" in
         h) echo "$usage"; exit;;
 	l) l=$OPTARG;;
+	wd) wd=$OPTARG;;
 	:) printf "missing argument for -%s\n" "$OPTARG" >&2; echo "$usage" >&2; exit 1;;
        \?) printf "illegal option: -%s\n" "$OPTARG" >&2; echo "$usage" >&2; exit 1;;
      esac
 done
 
 # mandatory arguments
-if [ ! "$l" ]; then
+if [ ! "$l" ] || [ ! "$wd"]; then
     echo "argument -l must be provided"
     echo "$usage" >&2; exit 1
 fi
 
 begin=`date +%s`
-wd=~/BIOL_4310/Exercises/Exercise_4/trimming_raw_reads
 
 echo "load required modules"
 module load fastqc/0.11.4
