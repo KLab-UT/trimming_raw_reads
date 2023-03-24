@@ -2,7 +2,6 @@
 #SBATCH --account=utu-biol4310
 #SBATCH --partition=lonepeak
 #SBATCH --nodes=1
-#SBATCH --mem=16
 #SBATCH --ntasks=1
 #SBATCH -o slurm-%j.out-%N
 #SBATCH -e slurm-%j.err-%N
