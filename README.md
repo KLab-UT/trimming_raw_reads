@@ -25,7 +25,7 @@ If you are here as a UTU student taking BIOL 4300, you should do the following:
 
 1.  Login to your [Github](https://github.com/) account.
 
-1.  Fork [this repository](https://github.com/rklabacka/genomics-pipeline-intro), by
+1.  Fork [this repository](https://github.com/KLab-UT/trimming_raw_reads), by
     clicking the 'Fork' button on the upper right of the page.
 
     After a few seconds, you should be looking at *your*
