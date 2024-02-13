@@ -89,7 +89,7 @@ Under this, you should see a section called 'Per base sequencing quality' with a
 
 ![abbrev-pipeline](./images/fastqc_plot.png)
 
-This shows you the average quality score for your reads at each position. On this plot, you'll see that each column represents a position (1-100). Each column also has a value represented by the blue line. This is your average score at that position across your reads. Most of the reads start of strong (Phred score > 30), but then they tapers toward the end where the score drops beneath the standard threshold of 30. The base calls with scores less than 30 should be trimmed (removed).
+This shows you the average quality score for your reads at each position. On this plot, each column represents base position (1-100). Each column also has a value represented by the blue line. This is your average score at that position across your reads. Most of the reads start off strong (Phred score > 30), but then they taper toward the end where the score drops beneath the standard threshold of 30. The base calls with scores less than 30 should be trimmed (removed).
 > note: We chose '30' as our cutoff. However, the cutoff you choose may be different. You need to decide based on the needs of your project what your cutoff is going to be.
 
 
@@ -122,7 +122,7 @@ Information on what the options for this program do is provided in the table bel
 |  ```-q```              |  ```--qualified_quality_phred```        | The threshold for qualifying ```a``` base                                | 15      |
 |  ```-u```              |  ```--unqualified_percent_limit```      | Reads with ```u```% bases under ```q``` value are discarded              | 40      |
 |  ```-e```              |  ```--average_qual```                   | Reads with average quality of ```e``` are discarded                      | 0       |
-|  ```-l```              |  ```--length_required```                | Reads with length (after filtering) > ```l``` are discarded              | 15      |
+|  ```-l```              |  ```--length_required```                | Reads with length (after filtering) < ```l``` are discarded              | 15      |
 |  ```-a```              |  ```--adapter_sequence```               | The nucleotide sequence for the adapter** used for sequencing            | *       |
 |                        |  ```--adapter_sequence_r2```            | The adapter sequence** for read 2 in paired-end sequencing               | *       |
 |  ```-M```              |  ```--cut_mean_quality```               | The minimum average in a sliding window to not remove bases              | 20      |
