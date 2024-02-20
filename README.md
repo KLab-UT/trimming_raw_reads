@@ -196,7 +196,7 @@ You should understand what is going on in both the q.main.sh and trim_raw_reads.
 ## Remix 1: Modify a trimming parameter
 Once your run has ran to completion, modify a parameter for fastp. You can change any parameter, but just choose one thing.
 
-You will make these changes to the "trim_raw_reads.sh" file and re-run the "q.main.sh" batch script. To make sure you don't overwrite your files from the previous run, I recommend changing the directory names to include ```remix1``` (**you only need to do this for the cleaned_reads directories. You should not re-download, re-fastq-dump, or re-qc the raw_reads. In other words, you should rename the directories in lines 35 and 36 and comment out lines 38 - 70. Alternatively, you could just make a new script and call it from q.main.sh**)
+You will make these changes to the "trim_raw_reads.sh" file and re-run the "q.main.sh" batch script. To make sure you don't overwrite your files from the previous run, I recommend changing the directory names to include ```remix1``` (**you only need to do this for the cleaned_reads directories. You should not re-download, re-fastq-dump, or re-qc the raw_reads. In other words, you should rename the directories in lines 37 and 38 and comment out lines 39 - 76. Alternatively, you could just make a new script and call it from q.main.sh**)
 
 ## Remix 2: Modify a DIFFERENT trimming parameter
 Once your run has ran to completion, modify a parameter for fastp. You can change any parameter, but just choose one thing.
